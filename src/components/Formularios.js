@@ -3,9 +3,9 @@ import Note from "./Note";
 
 export const Formularios = (props) => {
   const [notes, setNotes] = useState(props.prevNotes);
-console.log('notas por props:',props.prevNotes)
+
   const [newNote, setNewNote] = useState("a new note...");
-console.log(notes)
+  const [showAll, setShowAll] = useState(true);
   const handleNoteChange = (e) => {
     setNewNote(e.target.value);
   };
@@ -22,12 +22,19 @@ console.log(notes)
     setNotes(notes.concat(noteObject));
     setNewNote("");
   };
-
+  const notesToShow = showAll
+    ? notes
+    : notes.filter((note) => note.important === true);
   return (
     <div>
       <h1>Notes</h1>
+      <div>
+        <button onClick={() => setShowAll(!showAll)}>
+          Show {showAll ? "important" : "all"}
+        </button>
+      </div>
       <ul>
-        {notes.map((note) => (
+        {notesToShow.map((note) => (
           <Note key={note.id} note={note} />
         ))}
       </ul>
